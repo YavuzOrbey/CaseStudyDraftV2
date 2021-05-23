@@ -6,25 +6,21 @@ import java.util.Set;
 
 @Entity
 @Table(name="pantry")
-public class Pantry {
+public class Pantry extends BaseModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
 
-    @Column(name="name")
+    @Column(name="name", nullable=false)
     private String name;
 
-    @Column(name = "created_on")
-    private Timestamp created_on;
-
-    @Column(name = "updated_on")
-    private Timestamp updated_on;
-    @ManyToMany
-    @JoinTable(
-            joinColumns = @JoinColumn(name="pantry_id"),
-            inverseJoinColumns = @JoinColumn(name="user_id")
-    )
-    private Set<User> users;
+    @OneToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
+    private User user;
+    
+    public Pantry(String name) {
+    	this.name = name;
+    }
 
 }

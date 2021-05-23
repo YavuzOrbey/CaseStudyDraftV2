@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.util.Set;
 @Entity
 @Table(name="mealType")
-public class MealType {
+public class MealType extends BaseModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -13,12 +13,6 @@ public class MealType {
 
     @Column(name="name")
     private String name;
-
-    @Column(name = "created_on")
-    private Timestamp created_on;
-
-    @Column(name = "updated_on")
-    private Timestamp updated_on;
 
     @ManyToMany
     @JoinTable(name = "mealType_meal",

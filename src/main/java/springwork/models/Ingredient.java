@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 import java.util.Set;
 @Entity
 @Table(name="ingredient")
-public class Ingredient {
+public class Ingredient extends BaseModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -21,12 +21,6 @@ public class Ingredient {
     @Column(name="name")
     private String name;
 
-    @Column(name = "created_on")
-    private Timestamp created_on;
-
-    @Column(name = "updated_on")
-    private Timestamp updated_on;
-
     @ManyToMany(mappedBy = "ingredients")
     private Set<Measurement> servingSize_Measurements;
     @ManyToMany(mappedBy = "ingredients")
@@ -34,15 +28,13 @@ public class Ingredient {
 
 
     public Ingredient() {
-        this.created_on = new Timestamp(System.currentTimeMillis());
-        this.updated_on = new Timestamp(System.currentTimeMillis());
+    	super();
     }
 
     public Ingredient(int servingSize, int calories) {
+    	super();
         this.servingSize = servingSize;
         this.calories = calories;
-        this.created_on = new Timestamp(System.currentTimeMillis());
-        this.updated_on = new Timestamp(System.currentTimeMillis());
     }
 
     public String getName() {
@@ -69,11 +61,4 @@ public class Ingredient {
         this.calories = calories;
     }
 
-    public Timestamp getUpdated_on() {
-        return updated_on;
-    }
-
-    public void setUpdated_on(Timestamp updated_on) {
-        this.updated_on = updated_on;
-    }
 }

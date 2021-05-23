@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="user")
-public class User {
+public class User extends BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -21,14 +21,10 @@ public class User {
     @Column(name="password")
     private String password;
 
-    @Column(name = "created_on")
-    private Timestamp created_on;
 
-    @Column(name = "updated_on")
-    private Timestamp updated_on;
 
-    @ManyToMany(mappedBy = "users")
-    private Set<Pantry> pantry;
+    @OneToOne(mappedBy = "user")
+    private Pantry pantry;
 
     @ManyToMany(mappedBy = "rUsers")
     private List<Role> userRoles;
@@ -45,10 +41,9 @@ public class User {
     }
 
     public User(String email, String password) {
+    	super();
         this.email = email;
         this.password = password;
-        this.created_on = new Timestamp(System.currentTimeMillis());
-        this.updated_on = new Timestamp(System.currentTimeMillis());
     }
 
     public String getEmail() {
@@ -75,17 +70,6 @@ public class User {
         this.password = password;
     }
 
-    public Timestamp getCreated_on() {
-        return created_on;
-    }
-
-    public Timestamp getUpdated_on() {
-        return updated_on;
-    }
-
-    public void setUpdated_on(Timestamp updated_on) {
-        this.updated_on = updated_on;
-    }
 
     @Override
     public String toString() {

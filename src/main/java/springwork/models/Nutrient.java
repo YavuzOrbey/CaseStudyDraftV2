@@ -6,20 +6,14 @@ import java.util.Set;
 
 @Entity
 @Table(name="nutrient")
-public class Nutrient {
+public class Nutrient extends BaseModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
 
-    @Column(name="name")
+    @Column(name="name", nullable=false)
     private String name;
-
-    @Column(name = "created_on")
-    private Timestamp created_on;
-
-    @Column(name = "updated_on")
-    private Timestamp updated_on;
 
     @ManyToMany
     @JoinTable(
@@ -29,6 +23,18 @@ public class Nutrient {
     private Set<Ingredient> ingredients;
     @ManyToMany(mappedBy = "nutrients")
     private Set<Measurement> measurements;
+    
+    
+	public Nutrient() {
+		super();
+	}
 
+
+	public Nutrient(String name) {
+		super();
+		this.name = name;
+	}
+
+    
 
 }

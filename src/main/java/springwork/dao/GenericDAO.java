@@ -1,5 +1,6 @@
 package springwork.dao;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface GenericDAO<E> extends DatabaseDAO{
@@ -13,6 +14,10 @@ public interface GenericDAO<E> extends DatabaseDAO{
     default void updateDatabase(E entity){
         entityManager.merge(entity);
     }
-
+    public default void deleteFromDatabase(E entity) throws IllegalArgumentException{
+            entityManager.getTransaction().begin();
+            entityManager.remove(entity);
+            entityManager.getTransaction().commit();
+    }
     List<E> findAll();
 }

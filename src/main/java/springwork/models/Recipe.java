@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="recipe")
-public class Recipe {
+public class Recipe extends BaseModel{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -14,12 +14,6 @@ public class Recipe {
 
     @Column(name="name")
     private String name;
-
-    @Column(name = "created_on")
-    private Timestamp created_on;
-
-    @Column(name = "updated_on")
-    private Timestamp updated_on;
 
     @ManyToMany(mappedBy = "recipe")
     Set<Meal> meal;
@@ -31,14 +25,9 @@ public class Recipe {
     )
     private Set<StepEntity> stepEntity;*/
 
-
-    public Recipe() {
-    }
-
     public Recipe(String name) {
+    	super();
         this.name = name;
-        this.created_on = new Timestamp(System.currentTimeMillis());
-        this.updated_on = new Timestamp(System.currentTimeMillis());
     }
 
     public String getName() {
@@ -57,15 +46,4 @@ public class Recipe {
         this.meal = meal;
     }
 
-    public Timestamp getUpdated_on() {
-        return updated_on;
-    }
-
-    public void setUpdated_on(Timestamp updated_on) {
-        this.updated_on = updated_on;
-    }
-
-    public Timestamp getCreated_on() {
-        return created_on;
-    }
 }

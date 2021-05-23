@@ -17,12 +17,6 @@ public class IngredientService implements IngredientDAO {
     }
 
     @Override
-    public void updateDatabase(Ingredient entity) {
-        entity.setUpdated_on(new Timestamp(System.currentTimeMillis()));
-        entityManager.merge(entity);
-    }
-
-    @Override
     public List<Ingredient> findAll() {
         Query q = entityManager.createQuery("SELECT i FROM Ingredient i");
         return (List<Ingredient>) q.getResultList();

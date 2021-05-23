@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="meal")
-public class Meal {
+public class Meal extends BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
@@ -15,12 +15,6 @@ public class Meal {
 
     @Column(name="date")
     private Date date;
-
-    @Column(name = "created_on")
-    private Timestamp created_on;
-
-    @Column(name = "updated_on")
-    private Timestamp updated_on;
 
     @ManyToMany(mappedBy = "meal")
     private Set<MealType> mealType;

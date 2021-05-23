@@ -7,9 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-GG EZ
-From Query String: <%=request.getParameter("name") %>
-From Session: <%=session.getAttribute("user") %>
-From Controller: ${user_name }
+
 </body>
 </html>

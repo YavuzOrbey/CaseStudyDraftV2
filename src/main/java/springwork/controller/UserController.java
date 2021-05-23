@@ -1,5 +1,12 @@
 package springwork.controller;
 
+import java.time.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,26 +24,6 @@ import springwork.services.UserService;
 
 @Controller
 public class UserController {
-	@RequestMapping(value="/createuser", method = RequestMethod.GET)
-	public ModelAndView displayRoute(HttpServletRequest request) {
-		ModelAndView mav = new ModelAndView("users/create");
-		return mav;
-	}
-	
-	@RequestMapping(value="/createuser", method= RequestMethod.POST)
-	public ModelAndView createUser(HttpServletRequest request) {
-		ModelAndView mav;
-		try {
-		User user = new User(request.getParameter("email"), request.getParameter("password"));
-		UserService userService = new UserService();
-		userService.saveToDatabase(user);
-		mav = new ModelAndView("misc/success");
-		}
-		catch(Exception e) {
-			mav = new ModelAndView("misc/error");
-		}
-		return mav;
-	}
 	
 	@RequestMapping(value="/login", method = RequestMethod.GET)
 	public ModelAndView loginScreen(HttpServletRequest request) {
@@ -52,6 +39,8 @@ public class UserController {
 			User user = userService.findByEmail(request.getParameter("email")); 
 			boolean validated = userService.validateUser(user, request.getParameter("password"));
 			if(validated) {
+				HttpSession session = 	request.getSession();
+				session.setAttribute("user", user);
 				mav = new ModelAndView("misc/success");
 			}else {
 				mav = new ModelAndView("misc/error");
@@ -70,6 +59,7 @@ public class UserController {
 	
 	@RequestMapping(value="/register", method = RequestMethod.POST)
 	public ModelAndView registerUser(HttpServletRequest request) {
+		//should also create the user's pantry when registered 
 		ModelAndView mav = null;
 		UserService userService = new UserService();
 		try {
@@ -79,10 +69,29 @@ public class UserController {
 			User user = new User(request.getParameter("email"), request.getParameter("password"));
 			userService.saveToDatabase(user);
 			mav = new ModelAndView("misc/success");
-			
 		}catch(Exception e) {
 			System.out.println(e);
 		}
+		return mav;
+	}
+	
+	@RequestMapping(value="/dashboard", method= RequestMethod.GET)
+	public ModelAndView showDashboard(HttpServletRequest request) {
+		ModelAndView mav = null;
+		
+		//get current month
+//		Calendar theCalendar = new GregorianCalendar();
+//		theCalendar.setTime(new Date());
+		LocalDate firstDayOfMonth = LocalDate.now().withDayOfMonth(1);
+		Month month = firstDayOfMonth.getMonth();
+		
+		mav = new ModelAndView("pages/dashboard");
+		
+		Map<Integer, DayOfWeek> theMonth = new HashMap<Integer, DayOfWeek>();
+		for(int i=1; i<=month.length(firstDayOfMonth.isLeapYear()); i++) {
+			theMonth.put(i, firstDayOfMonth.plusDays(i-1).getDayOfWeek());
+		}
+		mav.addObject("theMonth", theMonth);
 		return mav;
 	}
 }
